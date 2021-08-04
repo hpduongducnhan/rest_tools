@@ -1,16 +1,25 @@
-# Useage
-    json_config_file_path = os.path.join(
-        os.getcwd(),
-        'example',
-        'api_params.json'
-    )
-    client = ApiClient(json_config_file_path)
-    data = client.make_request('example1')
+# Usage
+  > json_config_file_path = "/path/to/file/json"  
+  > client = ApiClient(json_config_file_path)   
+  > data = client.make_request('example1')   
+  >  
 
-    # make_request(
-    #   name_of_config_in_json_file: str,
-    #   extra_headers_of_request: Dict,
-    #   extra_parameter_of_request: Dict
-    # )
-    #
-
+# JSON Format
+```yaml
+{  
+  "name": "api endpoints",  
+  "description": "hello",  
+  "config": {    
+    "example1": {  
+      "method": "GET",  
+      "url": "https://gorest.co.in/public/v1/users",  
+      "header": {  
+        "Content-Type": "application/json"  
+      },  
+      "parameters": {  
+        "hello": "world"  
+      },  
+      "save_response": false  
+    }  
+  }  
+}  
