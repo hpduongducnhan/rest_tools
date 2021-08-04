@@ -14,12 +14,9 @@ class ApiClient:
         self, 
         config_file_path: str,
         proxy: ProxyModel = None,
-        try_to_request=3,
         **kwargs
     ) -> None:
         self.logger = kwargs.get('logger') or logging.getLogger()
-        self.config_file_path = config_file_path
-        self.try_counter = try_to_request
         if proxy:
             add_proxy(proxy)
         self.config: ConfigModel = load_config(config_file_path)
@@ -60,8 +57,7 @@ class ApiClient:
         elif _method.lower() == 'post':
             response = requests.post(_url, headers=_headers, verify=False, data=json.dumps(_parameters))
         else:
-            raise NotImplemented('just support get and post')
-
+            raise ValueError('just support get and post')
 
         try:
             response_data = json.loads(response.text)
