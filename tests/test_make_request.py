@@ -14,3 +14,16 @@ def test_run():
 
     data = client.make_request('example1')
     assert data
+
+def test_run_with_debug():
+    client = ApiClient(
+        os.path.join(
+            os.getcwd(),
+            'example',
+            'api_params.json'
+        ),
+        debug=True
+    )
+
+    data = client.make_request('example1')
+    assert data
