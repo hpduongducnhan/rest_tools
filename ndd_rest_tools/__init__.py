@@ -3,7 +3,7 @@ from .welcome import welcome
 from .models import ProxyModel, RequestResponse
 from .main import ApiClient
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 __all__ = [
     "welcome",
     "ProxyModel",
