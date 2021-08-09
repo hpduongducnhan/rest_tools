@@ -5,12 +5,10 @@ import json
 import logging
 import time
 import sys
+import urllib3
 from .utils import load_config
 from .proxy import add_proxy
 from .models import ConfigModel, ProxyModel, TargetAPI, RequestResponse
-
-
-
 
 
 class ApiClient:
@@ -19,6 +17,7 @@ class ApiClient:
         config_file_path: str,
         proxy: ProxyModel = None,
         debug: bool =False,
+        disable_ssl_warning=True,
         **kwargs
     ) -> None:
         self.logger = kwargs.get('logger') or logging.getLogger('ndd_rest_tools')
@@ -26,6 +25,10 @@ class ApiClient:
         if self.debug:
             self.logger.addHandler(logging.StreamHandler(sys.stdout))
             self.logger.level = logging.DEBUG
+
+        if disable_ssl_warning:
+            self.logger.debug('disable InsecureRequestWarning')
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
         if proxy:
             self.logger.info(f'add proxy {proxy}')
@@ -71,7 +74,9 @@ class ApiClient:
             _url = self._make_url_for_get_method(_url, _parameters)
             response = requests.get(_url, headers=_headers, verify=False)
         elif _method.lower() == 'post':
-            response = requests.post(_url, headers=_headers, verify=False, data=json.dumps(_parameters))
+            _jdata = json.dumps(_parameters)
+            self.logger.debug(f'request body {_jdata}')
+            response = requests.post(_url, headers=_headers, verify=False, data=_jdata)
         else:
             raise ValueError('just support get and post')
 
